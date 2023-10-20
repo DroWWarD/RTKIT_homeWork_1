@@ -48,10 +48,17 @@ public class StudentNameDataGroupImpl implements StudentNameDataGroup {
 
     @Override
     public Student getStudentByFamily(String family) {
-        Student[] studentsOnSameLetter = getStudents(family.substring(0, 1));
-        for (int i = 0; i < studentsOnSameLetter.length; i++) {
-            if (studentsOnSameLetter[i].getFamily().equals(family)) {
-                return studentsOnSameLetter[i];
+        int letter = family.charAt(0) - 1025;
+        if (nodes[letter] != null){
+            if (nodes[letter].getStudent().getFamily().equals(family)){
+                return nodes[letter].getStudent();
+            }
+            Node nextNode = nodes[letter].getNextNode();
+            while (nextNode != null) {
+                if (nextNode.getStudent().getFamily().equals(family)){
+                    return nextNode.getStudent();
+                }
+                nextNode = nextNode.getNextNode();
             }
         }
         return null;
